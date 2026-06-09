@@ -1305,7 +1305,7 @@
         horario: selectedTime, profissional: 'Sem preferência',
         observacoes: obs || 'Nenhuma'
       };
-      const res = await fetch('/api/a269c063-1db9-4dd3-933d-dde1137298e3', {
+      const res = await fetch('https://n8n-production-eda4b.up.railway.app/webhook/a269c063-1db9-4dd3-933d-dde1137298e3', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
       if (res.ok) {
@@ -1334,7 +1334,7 @@
     selectedTime = null; updateSummary();
     try {
       const [y,m,d] = data.split('-');
-      const res = await fetch('/api/horarios?data='+d+'/'+m+'/'+y);
+      const res = await fetch('https://n8n-production-eda4b.up.railway.app/webhook/horarios?data='+d+'/'+m+'/'+y);
       if (res.ok) { const json = await res.json(); slotsOcupados = json.ocupados || []; }
     } catch(e) { slotsOcupados = []; }
     renderHorarios();
@@ -1359,8 +1359,8 @@
   }
 
   // ── CANCELAMENTO ──
-  const WEBHOOK_BUSCAR   = '/api/9b0e57bb-6b55-4527-ae53-983cbdf37080';
-  const WEBHOOK_CANCELAR = '/api/cancelamento-confirmar';
+  const WEBHOOK_BUSCAR   = 'https://n8n-production-eda4b.up.railway.app/webhook/9b0e57bb-6b55-4527-ae53-983cbdf37080';
+  const WEBHOOK_CANCELAR = 'https://n8n-production-eda4b.up.railway.app/webhook/cancelamento-confirmar';
 
   let agendamentoEncontrado = null;
 
