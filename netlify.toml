@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://n8n-production-eda4b.up.railway.app/webhook/:splat"
+  status = 200
+  force = true
