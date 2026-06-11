@@ -1320,7 +1320,7 @@
       const res = await fetch('https://n8n-production-eda4b.up.railway.app/webhook/a269c063-1db9-4dd3-933d-dde1137298e3', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
       });
-      const json = await res.json();
+      const json = await res.json().catch(() => ({}));
       if (res.ok && json.agendado === true) {
         gerarCalLinks();
         // Mostrar overlay de confirmação
@@ -1332,7 +1332,7 @@
         document.getElementById('bannerSub').textContent = selectedService.name + ' · ' + dataFormatada + ' · ' + selectedTime;
         document.getElementById('banner').classList.add('show');
       } else {
-        showToast('❌ Agendamento não confirmado. Tente novamente num browser normal.');
+        showToast('Erro ao agendar. Tente novamente.');
       }
     } catch (err) {
       showToast('Erro de ligação. Tente novamente.');
