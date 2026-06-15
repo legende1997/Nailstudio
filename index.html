@@ -980,6 +980,10 @@
       <label class="input-label">WhatsApp</label>
       <input type="tel" id="whatsapp" placeholder="">
     </div>
+    <div class="input-group">
+      <label class="input-label">E-mail</label>
+      <input type="email" id="email" placeholder="Para receber a confirmação">
+    </div>
   </div>
 
   <!-- DATA E HORÁRIO -->
@@ -1234,11 +1238,21 @@
     }
     const duracao = duracoes[selectedService.name];
     const slotsNec = duracao / 30;
+
+    // Verificar se a data selecionada é hoje
+    const dataInput = document.getElementById('dataInput').value;
+    const hoje = new Date();
+    const [iy, im, id] = dataInput.split('-').map(Number);
+    const eHoje = iy === hoje.getFullYear() && (im - 1) === hoje.getMonth() && id === hoje.getDate();
+    const agoraMin = eHoje ? hoje.getHours() * 60 + hoje.getMinutes() : -1;
+
     grid.innerHTML = TODOS_HORARIOS.map(h => {
       const idx = TODOS_HORARIOS.indexOf(h);
       const [hh, mm] = h.split(':').map(Number);
       const fimMin = hh * 60 + mm + duracao;
       if (fimMin > 19 * 60) return '<div class="time-pill busy"><span class="x-mark">✕</span>' + h + '</div>';
+      // Bloquear horários já passados se for hoje
+      if (eHoje && (hh * 60 + mm) <= agoraMin) return '<div class="time-pill busy"><span class="x-mark">✕</span>' + h + '</div>';
       let temEspaco = true;
       for (let i = 0; i < slotsNec; i++) {
         const s = TODOS_HORARIOS[idx + i];
@@ -1284,7 +1298,7 @@
   async function agendar() {
     const nome = document.getElementById('nome').value.trim();
     const whats = document.getElementById('whatsapp').value.trim();
-    const email = '';
+    const email = document.getElementById('email').value.trim();
     const obs = document.getElementById('obs').value.trim();
     const data = document.getElementById('dataInput').value;
 
@@ -1292,6 +1306,7 @@
     if (!data) return showToast('Selecione uma data.');
     if (!selectedTime) return showToast('Selecione um horário.');
     if (!nome || !whats) return showToast('Preencha seu nome e WhatsApp.');
+    if (!email) return showToast('Preencha o seu e-mail.');
 
     showToast('A confirmar agendamento...');
 
